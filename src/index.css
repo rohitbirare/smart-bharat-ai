@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&family=Merriweather:ital@0;1&display=swap');
+@import "tailwindcss";
+
+:root {
+  --bg-deep: #070b18;
+  --bg-panel: #0d1326;
+  --saffron: #ff8a3d;
+  --teal: #22d3c4;
+  --border-glass: rgba(255, 255, 255, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(1200px 600px at 10% -10%, rgba(255, 138, 61, 0.12), transparent 60%),
+              radial-gradient(1000px 500px at 100% 0%, rgba(34, 211, 196, 0.10), transparent 60%),
+              var(--bg-deep);
+  color: #e6e8f0;
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, .font-display {
+  font-family: 'Poppins', 'Inter', sans-serif;
+}
+
+.font-letter {
+  font-family: 'Merriweather', Georgia, serif;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-glass);
+  backdrop-filter: blur(14px);
+}
+
+.glow-hover {
+  transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+}
+.glow-hover:hover {
+  box-shadow: 0 0 0 1px rgba(255, 138, 61, 0.25), 0 20px 40px -20px rgba(255, 138, 61, 0.25);
+  transform: translateY(-3px);
+  border-color: rgba(255, 138, 61, 0.35);
+}
+
+.gradient-text {
+  background: linear-gradient(90deg, #ff8a3d, #ffd66b, #22d3c4);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@keyframes shimmer {
+  0% { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+.shimmer {
+  background: linear-gradient(90deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.09) 50%, rgba(255,255,255,0.03) 100%);
+  background-size: 800px 100%;
+  animation: shimmer 1.6s infinite linear;
+}
