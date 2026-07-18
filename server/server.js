@@ -5,7 +5,7 @@
  * Starts an HTTP server on PORT (default 5000) with:
  *   - Firebase Admin SDK
  *   - Helmet (security headers)
- *   - CORS (allows the Vite frontend on localhost:5173)
+ *   - CORS (allows the Vite frontend + any *.vercel.app deployment)
  *   - Compression (gzip)
  *   - Morgan (request logging)
  *   - JSON body parsing
@@ -47,13 +47,16 @@ const PORT = process.env.PORT || 5000
 app.use(helmet())
 
 // ── CORS ──────────────────────────────────────────────────────────────────────
-// Allow the Vite dev server and any production origin.
-// Adjust the origin list when deploying to production.
+// Allow the Vite dev server and any production origin(s).
+// CLIENT_ORIGIN can be a single URL or a comma-separated list
+// (useful for allowing both your stable Vercel domain and preview URLs).
 const allowedOrigins = [
   'http://localhost:5173',   // Vite default
   'http://localhost:3000',   // CRA / other
   'http://localhost:4173',   // Vite preview
-  process.env.CLIENT_ORIGIN, // production override via env
+  ...(process.env.CLIENT_ORIGIN
+    ? process.env.CLIENT_ORIGIN.split(',').map((o) => o.trim())
+    : []),
 ].filter(Boolean)
 
 app.use(
@@ -61,6 +64,10 @@ app.use(
     origin: (origin, callback) => {
       // Allow requests with no origin (e.g. Postman, mobile apps)
       if (!origin || allowedOrigins.includes(origin)) {
+        return callback(null, true)
+      }
+      // Also allow any *.vercel.app preview URL automatically
+      if (origin && /^https:\/\/[a-z0-9-]+\.vercel\.app$/.test(origin)) {
         return callback(null, true)
       }
       callback(new Error(`CORS: origin ${origin} is not allowed`))
@@ -146,7 +153,7 @@ app.listen(PORT, () => {
   console.log(`║  🚀 Server running on   http://localhost:${PORT}    ║`)
   console.log(`║  🌍 Environment         ${(process.env.NODE_ENV || 'development').padEnd(25)}║`)
   console.log('║  🔒 Firebase Admin      ✅ Initialized           ║')
-  console.log('║  🤖 Gemini API          ✅ Ready                 ║')
+  console.log('║  🤖 AI Service          ✅ Ready                 ║')
   console.log('║  📋 Routes              /api/auth               ║')
   console.log('║                         /api/civic-twin         ║')
   console.log('║                         /api/life-event         ║')
