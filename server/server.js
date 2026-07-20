@@ -58,7 +58,9 @@ const allowedOrigins = [
     ? process.env.CLIENT_ORIGIN.split(',').map((o) => o.trim())
     : []),
 ].filter(Boolean)
-
+app.get('/', (req, res) => {
+  res.send('Backend server is running successfully!');
+});
 app.use(
   cors({
     origin: (origin, callback) => {
